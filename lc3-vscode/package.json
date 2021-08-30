@@ -1,0 +1,105 @@
+{
+	"name": "vscode-lc3",
+	"displayName": "LC3",
+	"description": "LC3 language support, including code highlight, static checking and autocompletion",
+	"license": "MIT",
+	"version": "1.1.1",
+	"publisher": "qili",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Liqi1003/lc3_vscode.git"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"engines": {
+		"vscode": "^1.43.0"
+	},
+	"activationEvents": [
+		"onLanguage:lc3"
+	],
+	"main": "./client/out/extension",
+	"contributes": {
+		"languages": [
+			{
+				"id": "lc3",
+				"aliases": [
+					"lc3"
+				],
+				"extensions": [
+					".asm"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "lc3",
+				"scopeName": "source.asm",
+				"path": "./syntaxes/lc3.tmLanguage.json"
+			}
+		],
+		"configuration": {
+			"title": "LC3",
+			"type": "object",
+			"properties": {
+				"LC3.version": {
+					"scope": "resource",
+					"type": "string",
+					"default": "v2",
+					"description": "Versions of LC3 simulator used. Note that this option only changes LEA and TRAP behavior.",
+					"enum": [
+						"v2",
+						"v3"
+					]
+				},
+				"LC3.showErrors": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"description": "Controls whether to show all errors."
+				},
+				"LC3.showWarnings": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"description": "Controls whether to show all warnings."
+				},
+				"LC3.showIllegalInstructions": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "Controls whether to generate error message when an illegal instruction is present."
+				},
+				"LC3.enableSubroutineChecking": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"description": "Enables subroutine analysis for calling interfaces, saved registers etc."
+				},
+				"LC3.enableUnrolledLoopChecking": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"description": "Enables consecutively repeated code (unrolled loop) analysis. Recommend to turn on."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+	},
+	"devDependencies": {
+		"@types/mocha": "^8.2.1",
+		"@types/node": "^12.20.5",
+		"@typescript-eslint/parser": "^2.3.0",
+		"esbuild": "^0.11.20",
+		"eslint": "^6.4.0",
+		"mocha": "^8.3.1",
+		"typescript": "^3.9.9"
+	},
+	"dependencies": {}
+}

@@ -1,0 +1,146 @@
+/*
+    The command guide for lc3sim 
+    Written by Tingkai Liu on Oct 9, 2020.
+*/
+
+break
+    break clear <addr>|all    -- clear one or all breakpoints
+    break list                -- list all breakpoints
+    break set <addr> [<skip>] -- set a breakpoint with skipping number
+    
+    Set a breakpoint at a certain address, with optional skip count. 
+
+    The reverse executions won't affect the breakpoint set 
+    and won't deduct the skip count when went back through a breakpoint. 
+    However, when user go forward again and pass through a breakpoint, 
+    the skip count will be deducted (as usual), which may cause undesired stop
+    because one or more skip counts are deducted during the backward and forward process.
+    
+continue
+    Continue execution until hit a breakpoint or activate a watchpoint. 
+    
+    There is a reverse version of continue, called reverse-continue, which will 
+    be introduced later.
+
+dump        
+    dump               -- dump memory around PC
+    dump <addr>        -- dump memory starting from an address or label
+    dump <addr> <addr> -- dump a range of memory
+    dump more          -- continue previous dump (or press <Enter>)
+
+    Infomation command.
+
+execute     
+    Execute commands in the target script file.
+
+file
+    Load a obj file into the lc3sim at set PC to its entry. 
+
+    Will clear the cache of dynamic execution track for the reverse execution purpose.
+    In other word, after a new file is loaded, all the execution before the 
+    file is loaded are no longer reverseable. 
+
+finish      
+    finsh the subroutine that current instruction is in. 
+
+    There is a reverse version of finish, called reverse-finish, which will 
+    be introduced later.
+
+help        
+    Infomation command.
+
+list        
+    list               -- list instructions around PC
+    list <addr>        -- list instructions starting from an address or label
+    list <addr> <addr> -- list a range of instructions
+    list more          -- continue previous listing (or press <Enter>)
+
+    Infomation command.
+
+memory     
+    memory <addr> <value>
+
+    Set the value for certain address. 
+
+    This will be treated as a "virtual instruction" inserted for once into the 
+    execution path. As a result, at reverse execution, memory set would be undone 
+    when reverse through the step where the memory was set. An notice will be printed 
+    when a memory set is undone. However, since it is a "virtual instruction", 
+    it won't be redone when going forward through the same point it was set. 
+
+next       
+    Execute for one step. 
+    If current step is a subroutine call, will execute until subroutine return (finish)
+    or until it hit a stopping condition. 
+
+    There is a reverse version of next, called reverse-next, which will 
+    be introduced later.
+
+option
+    Set system options for lc3sim
+
+    Won't affect and won't be affected by reverse execution
+
+printregs  
+    Print out all register values. 
+
+    Infomation command.
+
+cmd_quit 
+    Quit lc3sim.
+
+    Note that the whole memory for the lc3sim will be gone. 
+    No infomation will be restored when lc3sim restarts. 
+
+register
+    register <reg> <value>
+
+    Set the value for certain register. 
+
+    This will be treated as a "virtual instruction" inserted for once into the 
+    execution path. As a result, at reverse execution, register set would be undone 
+    when reverse through the step where the register was set. An notice will be printed 
+    when a register set is undone. However, since it is a "virtual instruction", 
+    it won't be redone when going forward through the same point it was set. 
+
+reset
+    Reset lc3sim to initial state.
+
+    Will clear the cache of dynamic execution track for the reverse execution purpose.
+
+step
+    Execute one step in lc3sim. 
+
+    There is a reverse version of step, called reverse-step, which will 
+    be introduced later.
+
+translate
+    translate <addr>
+
+    Get the value at certain address.
+
+    Infomation command.
+
+
+// The followings are reverse execution instructions 
+
+reverse-step (rstep)
+    Go back for one step in lc3sim
+
+    Note that memory and register command are also regarded as a step, so that 
+    it could be also used to undo a memory or register command. 
+
+reverse-next (rnext)
+    Go back for one step. If previous step is a RET, then go back to where the 
+    subroutine is called (reverse-finish).
+    All memory/register command done at the previous instruction will also be undone.
+
+reverse-continue (rcontinue)
+    Go back to where an instruction with a breakpoint or will trigger a watchpoint 
+    is about to be executed.
+    All memory/register command done at that instruction will also be undone.
+
+reverse-finish (rfinish)
+    Go back to where the subroutine that current instruction is in is called
+    All memory/register command done at the entry will also be undone.
+

@@ -1,0 +1,24 @@
+To replicate the VSCode part of our paper, you can either:
+1) Open VSCode, search "lc3" in the extension market, the one published by qili is ours.
+2) Open VSCode, go to extension tab and click on more (...), then choose "install from VSIX". We have provided the VSIX file in the replication package.
+3) Build the extension from source, whcich require some work. See below.
+
+We provide a .visx file directly in the replication package. In case someone want to build it from source, here's the guide.
+
+To build the VSCode extension, you need the following tools/packages:
+- node
+- npm
+- vsce
+
+Take Ubuntu as an example, you can install node and npm with "sudo apt install nodejs npm"
+Then, you can install vsce using "sudo npm install -g vsce"
+
+After getting all the required packages, you can build the extension and generate the portable extension package by running "npm install && vsce package",
+which will generate a .vsix file.
+
+The VSCode editor can then install extensions from .vsix files (see 2).
+
+NOTE: Authentication may be needed when packaging the extension, which need an AzureDev account. 
+Please refer to https://code.visualstudio.com/api/working-with-extensions/publishing-extension#create-a-publisher for how to create a publisher.
+To be able to package the extension, you need to replace the "publisher" field (qili) in package.json with the publisher name of the AzureDev you are using.
+

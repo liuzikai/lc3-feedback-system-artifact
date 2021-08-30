@@ -1,0 +1,51 @@
+; This program test assertions of read-only and write-only memory
+; KLC3 is expected to detect and give warning about data r/w overflow
+; 2020.07.11 by liuzikai
+
+; KLC3: INPUT_FILE
+
+.ORIG x3000
+
+; CHECK: ================ REPORT ================
+
+LD R1, READ_ONLY_MEM  ; this is OK
+; CHECK-NOT: LD R1, READ_ONLY_MEM
+
+LD R2, UNINITIALIZED_MEM  ; this is BAD
+; CHECK: WARN_READ_UNINITIALIZED_MEMORY
+; CHECK-SAME: LD R2, UNINITIALIZED_MEM
+
+ST R1, UNINITIALIZED_MEM  ; this is OK
+; CHECK-NOT: ST R1, UNINITIALIZED_MEM
+
+ST R2, READ_ONLY_MEM  ; this is BAD
+; CHECK: WARN_WRITE_READ_ONLY_DATA
+; CHECK-SAME: ST R2, READ_ONLY_MEM
+
+LD R3, READ_ONLY_SYM  ; this is OK
+; CHECK-NOT: LD R3, READ_ONLY_SYM
+
+LD R4, WRITE_ONLY_SYM  ; this is BAD
+; CHECK: WARN_READ_UNINITIALIZED_MEMORY
+; CHECK-SAME: LD R4, WRITE_ONLY_SYM
+
+ST R3, WRITE_ONLY_SYM  ; this is OK
+; CHECK-NOT: ST R3, WRITE_ONLY_SYM
+
+ST R4, READ_ONLY_SYM  ; this is BAD
+; CHECK: WARN_WRITE_READ_ONLY_DATA
+; CHECK-SAME: ST R4, READ_ONLY_SYM
+
+; CHECK: ================ END OF REPORT ================
+
+HALT
+
+READ_ONLY_MEM  .FILL #42  ; KLC3: READ_ONLY
+UNINITIALIZED_MEM .BLKW #1   ; KLC3: UNINITIALIZED
+
+READ_ONLY_SYM  .FILL #0   ; KLC3: SYMBOLIC as NUM1 READ_ONLY
+WRITE_ONLY_SYM .BLKW #1   ; KLC3: SYMBOLIC as NUM2 UNINITIALIZED
+
+.END
+
+; RUN: %klc3 %s --use-forked-solver=false --output-dir=none --report-to-terminal=true 2>&1 | FileCheck %s

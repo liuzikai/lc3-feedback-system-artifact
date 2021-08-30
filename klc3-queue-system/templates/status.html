@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>KLC3 Queue Status</title>
+</head>
+<body>
+
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h1 class="mt-5">KLC3 Queue Status </h1>
+        <!-- <span class="badge badge-success">New</span> -->
+        <p class="lead">Name: {{ .name }}  NetID: {{ .netid }}</p>
+        <ul>
+            <li>Current Running for your MP: {{.status.Running}}</li>
+            <li>Last Running Time: {{.status.LastRun}}</li>
+            <li>Error (empty for no error): {{.status.Error}}</li>
+            <li>Current Waiting Students: {{ .waiting }}</li>
+        </ul>
+        <div class="alert alert-warning" role="alert">
+            Note that the KLC3 Queue Status Page is still under test, the information provided may not be accurate.
+        </div>
+
+    </div>
+</main>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.1/esm/popper.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

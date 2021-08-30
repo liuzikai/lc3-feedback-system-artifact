@@ -1,0 +1,47 @@
+//===-- SolverStats.h -------------------------------------------*- C++ -*-===//
+//
+//                     The KLEE Symbolic Virtual Machine
+//
+// This file is distributed under the University of Illinois Open Source
+// License. See LICENSE.TXT for details.
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef KLEE_SOLVERSTATS_H
+#define KLEE_SOLVERSTATS_H
+
+#include "klee/Statistics/Statistic.h"
+
+namespace klee {
+namespace stats {
+
+  extern Statistic cexCacheTime;
+  extern Statistic queries;
+  extern Statistic queriesInvalid;
+  extern Statistic queriesValid;
+  extern Statistic queryCacheHits;
+  extern Statistic queryCacheMisses;
+  extern Statistic queryCexCacheHits;
+  extern Statistic queryCexCacheMisses;
+  extern Statistic queryConstructs;
+  extern Statistic queryCounterexamples;
+  extern Statistic queryTime;
+
+  // Note: [liuzikai] add some statistics for IndependentSolver
+  extern Statistic independentSolverTime;
+  extern Statistic independentSolverQueries;
+  extern Statistic getIndependentConstraintsTime;
+  extern Statistic independentElementSetCacheHits;
+  extern Statistic independentElementSetCacheMisses;
+  extern size_t independentElementSetCacheSize;
+  extern Statistic independentElementSetCacheLookupTime;
+  extern Statistic independentElementSetConstructTime;
+
+#ifdef KLEE_ARRAY_DEBUG
+  extern Statistic arrayHashTime;
+#endif
+
+}
+}
+
+#endif /* KLEE_SOLVERSTATS_H */
